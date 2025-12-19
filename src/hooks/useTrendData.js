@@ -1,32 +1,35 @@
-import { useTrendContext } from "../context/TrendContext";
-import { useTrendData as useTrendQuery} from "../api/queries";
+// src/hooks/useTrendData.js
+import { useTrendContext } from "../context/TrendContext.jsx";
+import { useTrendData as useTrendQuery } from "../api/queries";
 
+export const useTrendDataHook = () => {
+    const { filters } = useTrendContext();
+    const { location, year, propertyType, percentile, metric } = filters;
 
-
-
-import React from 'react'
-
-const useTrendDataHook = () => {
-    const {filters}=useTrendContext();
-    const {loaction, year, propertyType, percentile, metric}=filters;
-
-    const query=useTrendQuery({
-
+    const query = useTrendQuery({
         location,
         year,
         propertyType,
         percentile,
-        metric
+        metric,
+    });
 
-    })
+    // if query is somehow falsy, return safe defaults
+    if (!query) {
+        return {
+            filters,
+            data: null,
+            isLoading: false,
+            isError: false,
+            error: null,
+        };
+    }
 
-
-
-  return (
-    <div>useTrendData</div>
-  )
-}
-
-export default useTrendData
-
-
+    return {
+        filters,
+        data: query.data,
+        isLoading: query.isLoading,
+        isError: query.isError,
+        error: query.error,
+    };
+};

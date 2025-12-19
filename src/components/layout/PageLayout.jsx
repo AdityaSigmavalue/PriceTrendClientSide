@@ -1,12 +1,38 @@
-import React from 'react'
+// src/components/layout/PageLayout.jsx
+import React from "react";
+import { useTheme } from "../../context/ThemeContext.jsx";
 
 const PageLayout = ({ title, children }) => {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-start py-10">
-      <h1 className="text-2xl font-semibold mb-6">{title}</h1>
-      <div className="w-full max-w-3xl">{children}</div>
-    </div>
-  )
-}
+  const { theme, toggleTheme } = useTheme();
 
-export default PageLayout
+  const bgClass = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
+
+  return (
+    <div className={`${bgClass} min-vh-100`}>
+      <div className="container py-2">
+        <div className="d-flex justify-content-between align-items-center mb-2">
+          {/* Title wrapper grows and centers text */}
+          <div className="flex-grow-1 text-center">
+            <h1 className="h4 fw-semibold mb-0">{title}</h1>
+          </div>
+
+          {/* Toggle button stays to the right */}
+          <button
+            type="button"
+            className={`btn btn-sm px-4 ${theme === "dark" ? "btn-outline-light" : "btn-outline-dark"
+              }`}
+            onClick={toggleTheme}
+          >
+            {theme === "dark" ? "Light" : "Dark"}
+          </button>
+        </div>
+
+        <div className="row justify-content-center">
+          <div className="col-12 col-xl-10">{children}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PageLayout;

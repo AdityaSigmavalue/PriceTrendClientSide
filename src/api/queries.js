@@ -4,7 +4,7 @@ import api from "./client";
 
 
 
-export const useUploadExcel = () => 
+export const useUploadExcel = () =>
     useMutation({
         mutationFn: async (file) => {
             const formData = new FormData();
@@ -17,22 +17,22 @@ export const useUploadExcel = () =>
         },
     });
 
-export const useTrendData = ({ location, year, propertyData, percentile, metric }) => {
+export const useTrendData = ({ location, year, propertyType, percentile, metric }) =>
     useQuery({
-        queryKey: ["trend", location, year, propertyData, percentile, metric],
+        queryKey: ["trend", location, year, propertyType, percentile, metric],
         enabled: !!location,
         queryFn: async () => {
             const params = {};
-
             if (year) params.year = year;
             if (propertyType && propertyType !== "all") params.property_type = propertyType;
             if (percentile) params.percentile = percentile;
-            if (metric) params.metric;
+            if (metric) params.metric = metric;
 
             const res = await api.get(`trend/${encodeURIComponent(location)}/`, {
                 params,
             });
+
+            console.log("API /trend response:", res.data);   // <-- log here
             return res.data;
         },
     });
-}

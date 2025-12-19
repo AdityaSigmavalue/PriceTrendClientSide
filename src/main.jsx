@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './context/ThemeContext.jsx'
 import { TrendProvider } from './context/TrendContext.jsx'
+import "bootstrap/dist/css/bootstrap.min.css";
+
 
 
 const queryClient = new QueryClient()

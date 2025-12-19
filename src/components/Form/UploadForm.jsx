@@ -1,82 +1,82 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useUploadExcel } from '../../hooks/useUploadExcel'
-
-
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useUploadExcel } from "../../hooks/useUploadExcel";
+import { useTheme } from "../../context/ThemeContext";
 
 const UploadForm = () => {
     const [file, setFile] = useState(null);
     const [successMsg, setSuccessMsg] = useState("");
 
     const navigate = useNavigate();
-
     const { upload, isLoading, isError, error, data } = useUploadExcel();
-
-
-
+    const { theme } = useTheme();
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!file) return;
+
         setSuccessMsg("");
+
         upload(file, {
             onSuccess: (res) => {
-                setSuccessMsg("File uploaded successfully!");
-                console.log("Successfully saved")
+                setSuccessMsg(res.message || "File uploaded successfully!");
+                console.log("Successfully saved");
                 setTimeout(() => navigate("/analysis"), 800);
             },
         });
     };
+
     return (
+        <div className={`card ${theme === "dark" ? "bg-dark" : "bg-light"} border-secondary shadow-sm`}>
+            <div className="card-header border-secondary d-flex justify-content-between align-items-center">
+                <h2 className="h6 mb-0">Upload Excel</h2>
+                {/* <span className="badge bg-secondary">Step 1</span> */}
+            </div>
 
+            <div className="card-body">
+                <form onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                        <label className="form-label small">Excel file</label>
+                        <input
+                            type="file"
+                            accept=".xlsx,.xls"
+                            className={`form-control form-control-sm ${theme === "dark"
+                                    ? "bg-dark text-light"
+                                    : "bg-light text-dark"
+                                } border-secondary`}
+                            onChange={(e) => setFile(e.target.files[0] || null)}
+                        />
+                    </div>
 
-        <>
-            <div>UploadForm</div>
-            <form onSubmit={handleSubmit}
-                className="border border-gray-600 rounded-lg p-6 flex flex-col gap-4"
-            >
+                    <button
+                        type="submit"
+                        disabled={isLoading || !file}
+                        className={`btn ${theme === "dark" ? "btn-light" : "btn-dark"} w-100`}
+                    >
+                        {isLoading ? "Uploading..." : "Upload & Analyze"}
+                    </button>
 
-                <label className='flex flex-col gap-2'>
+                    {isError && (
+                        <div className="alert alert-danger mt-3 py-2 mb-0 small">
+                            {error?.response?.data?.message || "Upload failed"}
+                        </div>
+                    )}
 
-                    <span className='text-sm'> Excel file  </span>
+                    {successMsg && (
+                        <div className="alert alert-success mt-3 py-2 mb-0 small">
+                            {successMsg}
+                        </div>
+                    )}
 
-                    <input
-                        type="file"
-                        accept='.xlsx, .xls' onChange={(e) => setFile(e.target.files[0] || null)}
-                        className="file:mr-4 file:py-2 file:px-4
-                     file:rounded file:border-0
-                     file:bg-gray-800 file:text-white
-                     hover:file:bg-gray-700" />
-                </label>
+                    {data && !successMsg && (
+                        <div className="alert alert-success mt-3 py-2 mb-0 small">
+                            {data.message}
+                        </div>
+                    )}
+                </form>
+            </div>
+        </div>
+    );
+};
 
-                <button
-                    type='submit'
-                    disabled={isLoading || !file}
-
-                    className="bg-white text-black px-4 py-2 rounded
-                   disabled:opacity-50 disabled:cursor-not-allowed hover:transition duration-200    bg-gray-800 text-white"
-                >
-                    {isLoading ? 'Uploading...' : 'Upload & Analyze'}
-                </button>
-
-                {isError && (
-                    <p className="text-red-400 text-sm">
-                        {error?.response?.data?.message || "Upload failed"}
-                    </p>
-                )}
-                {successMsg && (
-                    <p className="text-green-400 text-sm">{successMsg}</p>
-                )}
-
-                {data && (
-                    <p className="text-green-400 text-sm">{data.message}</p>
-                )}
-            </form>
-        </>
-
-
-    )
-}
-
-export default UploadForm
+export default UploadForm;
