@@ -27,7 +27,7 @@ export default function FilterBar() {
   const [draft, setDraft] = useState(filters);
   const bgClass = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
 
-  let  textColorClass = theme === "dark" ? "text-light" : "text-dark";
+  const textColorClass = theme === "dark" ? "text-light" : "text-dark";
 
 
 
@@ -137,7 +137,7 @@ export default function FilterBar() {
               className={`form-select form-select-sm ${bgClass} border-secondary cursor-pointer`}
               value={draft.percentile}
               onChange={handleChange("percentile")}
-            >
+            > 
               {percentiles.map((p) => (
                 <option key={p.value} value={p.value}>
                   {p.label}
@@ -166,7 +166,7 @@ export default function FilterBar() {
           </div>
 
           {/* Apply button */}
-          <div className="col-12 col-md-3 mx-auto mt-3  text-end">
+          <div className="col-12 col-md-3 mx-auto mt-2  text-end">
             <button
               type="submit"
               className={`btn ${theme === "dark" ? "btn-light" : "btn-dark"} w-100`}

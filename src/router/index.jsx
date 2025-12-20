@@ -14,7 +14,7 @@ const AppRouter = () => {
             <Routes>
                 <Route path="/analysis" element={<AnalysisPage />} />
                 <Route path="/upload" element={<UploadPage />} />
-                {/* <Route path="*" element={<Navigate to="/upload" replace />} /> */}
+                <Route path="*" element={<Navigate to="/upload" replace />} />
             </Routes>
         </div>
     )

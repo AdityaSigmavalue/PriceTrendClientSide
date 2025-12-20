@@ -9,7 +9,7 @@ const AnalysisPage = () => {
       <div className="row justify-content-center">
         <div className="col-12 col-lg-10 col-xl-9">
           {/* Filters on top */}
-          <div className="mb-4">
+          <div className="mb-2">
             <FilterBar />
           </div>
 
