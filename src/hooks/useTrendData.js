@@ -2,8 +2,7 @@
 import { useTrendContext } from "../context/TrendContext.jsx";
 import { useTrendData as useTrendQuery } from "../api/queries";
 
-export const useTrendDataHook = () => {
-    const { filters } = useTrendContext();
+export const useTrendDataHook = (filters) => {
     const { location, year, propertyType, percentile, metric } = filters;
 
     const query = useTrendQuery({

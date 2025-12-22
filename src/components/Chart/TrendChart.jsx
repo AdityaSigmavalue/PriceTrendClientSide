@@ -8,11 +8,15 @@ import {
     CartesianGrid,
     ResponsiveContainer,
 } from "recharts";
+
 import { useTrendDataHook } from "../../hooks/useTrendData.js";
 import { useTheme } from "../../context/ThemeContext.jsx";
+import { useSelector } from "react-redux";
 
 export default function TrendChart() {
-    const { data, isLoading, isError, error, filters } = useTrendDataHook();
+
+    const filters=useSelector((state)=>state.filters);
+    const { data, isLoading, isError, error } = useTrendDataHook(filters);
     const { theme } = useTheme();
 
     const isDark = theme === "dark";

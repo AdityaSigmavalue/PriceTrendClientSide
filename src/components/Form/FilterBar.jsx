@@ -1,9 +1,13 @@
 // src/components/Form/FilterBar.jsx
 import { useState, useEffect } from "react";
 import React from "react";
-import { useTrendContext } from "../../context/TrendContext.jsx";
+// import { useTrendContext } from "../../context/TrendContext.jsx";
 import { useTheme } from "../../context/ThemeContext.jsx";
 import { useLocations } from "../../api/queries.js";
+import { useSelector, useDispatch } from "react-redux";
+import { setFilters as setFiltersAction } from "../../store/filtersSlice.js";
+
+
 
 const propertyTypes = [
   { value: "flat", label: "Flat" },
@@ -22,7 +26,9 @@ const percentiles = [
 ];
 
 export default function FilterBar() {
-  const { filters, setFilters } = useTrendContext();
+
+  const filters = useSelector((state) => state.filters)
+  const dispatch = useDispatch();
   const { theme } = useTheme();
   const { data: locationsData, isLoading: isLocLoading } = useLocations();
 
@@ -60,7 +66,8 @@ export default function FilterBar() {
 
   const handleApply = (e) => {
     e.preventDefault();
-    setFilters(draft);
+    dispatch(setFiltersAction(draft));
+
   };
 
   return (
