@@ -1,7 +1,9 @@
 // src/components/Form/FilterBar.jsx
 import { useState, useEffect } from "react";
+import React from "react";
 import { useTrendContext } from "../../context/TrendContext.jsx";
-import {  useTheme } from "../../context/ThemeContext.jsx";
+import { useTheme } from "../../context/ThemeContext.jsx";
+import { useLocations } from "../../api/queries.js";
 
 const propertyTypes = [
   { value: "flat", label: "Flat" },
@@ -21,15 +23,13 @@ const percentiles = [
 
 export default function FilterBar() {
   const { filters, setFilters } = useTrendContext();
-  const {theme}= useTheme();
+  const { theme } = useTheme();
+  const { data: locationsData, isLoading: isLocLoading } = useLocations();
 
   // local draft so typing does not trigger API until submit
   const [draft, setDraft] = useState(filters);
   const bgClass = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
-
   const textColorClass = theme === "dark" ? "text-light" : "text-dark";
-
-
 
   useEffect(() => {
     setDraft(filters);
@@ -68,27 +68,34 @@ export default function FilterBar() {
       onSubmit={handleApply}
       className={`card ${bgClass} border-secondary shadow-sm mb-3`}
     >
-      <div className={`card-header d-flex justify-content-between align-items-center border-secondary ${bgClass}`}>
+      <div
+        className={`card-header d-flex justify-content-between align-items-center border-secondary ${bgClass}`}
+      >
         <div>
           <h2 className={`h6 mb-0 ${textColorClass}`}>Filter Configuration</h2>
-          <small className={textColorClass}>
-          </small>
+          <small className={textColorClass}></small>
         </div>
       </div>
 
       <div className="card-body">
         <div className="row g-2 align-items-end">
-          {/* Location */}
+          {/* Location with datalist options */}
           <div className="col-12 col-md-2">
             <label className={`form-label small text-uppercase ${textColorClass}`}>
               Location
             </label>
             <input
+              list="location-list"
               className={`form-control form-control-sm ${bgClass} border-secondary cursor-text`}
-              placeholder="e.g. Baner"
+              placeholder={isLocLoading ? "Loading..." : "e.g. Baner"}
               value={draft.location}
               onChange={handleChange("location")}
             />
+            <datalist id="location-list">
+              {locationsData?.map((loc) => (
+                <option key={loc} value={loc} />
+              ))}
+            </datalist>
           </div>
 
           {/* Property Type */}
@@ -137,7 +144,7 @@ export default function FilterBar() {
               className={`form-select form-select-sm ${bgClass} border-secondary cursor-pointer`}
               value={draft.percentile}
               onChange={handleChange("percentile")}
-            > 
+            >
               {percentiles.map((p) => (
                 <option key={p.value} value={p.value}>
                   {p.label}
@@ -148,7 +155,9 @@ export default function FilterBar() {
 
           {/* Weighted toggle */}
           <div className="col-6 col-md-3">
-            <label className={`form-label small text-uppercase ${textColorClass} d-block`}>
+            <label
+              className={`form-label small text-uppercase ${textColorClass} d-block`}
+            >
               Weighted Average
             </label>
             <div className="form-check form-switch">
@@ -179,5 +188,4 @@ export default function FilterBar() {
       </div>
     </form>
   );
-
 }

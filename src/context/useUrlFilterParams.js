@@ -2,8 +2,8 @@
 import { useSearchParams } from "react-router-dom";
 
 const DEFAULT_FILTERS = {
-    location: "",
-    propertyType: "flat",
+    location: "Baner",
+    propertyType: "office",
     year: "",
     percentile: "",
     metric: "weighted",

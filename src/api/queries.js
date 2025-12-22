@@ -1,7 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import api from "./client";
 
-
 export const useUploadExcel = () =>
     useMutation({
         mutationFn: async (file) => {
@@ -34,3 +33,14 @@ export const useTrendData = ({ location, year, propertyType, percentile, metric 
             return res.data;
         },
     });
+
+
+export const useLocations = () => {
+    return useQuery({
+        queryKey: ['locations'],
+        queryFn: async () => {
+            const res = await api.get('locations/')
+            return res.data.locations;
+        },
+    })
+}
