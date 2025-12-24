@@ -40,6 +40,8 @@ export const useLocations = () => {
         queryKey: ['locations'],
         queryFn: async () => {
             const res = await api.get('locations/')
+            console.log("Locations :-", res.data.locations);
+            console.log("No. of Locations :-", res.data.count);
             return res.data.locations;
         },
     })

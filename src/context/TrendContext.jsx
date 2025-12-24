@@ -1,6 +1,6 @@
 // src/context/TrendContext.jsx
 import { createContext, useContext, useState } from "react";
-import { useUrlFilters } from "./useUrlFilterParams";
+import { useUrlFilters } from "../hooks/useUrlFilterParams";
 
 
 const TrendContext = createContext(null);
